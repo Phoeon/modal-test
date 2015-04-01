@@ -1,0 +1,92 @@
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="./phoeon-modal.css" />
+	<style>
+		body{
+			margin: 0;
+		}
+		
+	</style>
+</head>
+<body style="height:3000px;width:2000px">
+	a's;lfkaslkd;jfl;dsk
+	<button style="position:fixed">show</button>
+	<script src="jquery.js"></script>
+	<script src="phoeon-modal.js"></script>
+	<script type="text/javascript">
+
+		Date.prototype.toFmtString = function(){
+			var fmt = arguments[0]||"yyyy-MM-dd";
+
+			var map = {
+				y : {fn : "getFullYear" ,l  : 4},
+				M : {fn : "getMonth"	,l  : 2 , inc : 1},
+				d : {fn : "getDate" 	,l  : 2},
+				h : {fn : "getHours" 	,l  : 2},
+				m : {fn : "getMinutes" 	,l  : 2},
+				s : {fn : "getSeconds"	,l  : 2}
+			}
+			for(var k in map){
+				var matches =  fmt.match(k+"+","g") ,v;
+				if(matches)
+				{
+					if(matches[0].length>map[k].l||matches[0].length<map[k].l/2){
+						throw new Error("日期格式错误："+matches[0])
+						fmt = undefined;
+						break;
+					}
+					v = this[map[k].fn]()+(map[k].inc||0) ;
+					v = (v<10?"0"+v:v)+"";
+					v = v.slice(map[k].l-matches[0].length);
+					fmt = fmt.replace(matches[0],v) ;
+				}
+			}
+			return fmt ;
+		}
+
+		// alert(new Date().toFmtString("yyyy"))
+		$(window.top.document).delegate("button","click",function(){
+			var modal = new window.top.Modal({
+				theme : "grey",
+				// url : "phoeon-modal.css",
+				movable:true,
+				destroy:true,
+				windowResize:false,
+				width : 500,//num
+				height : 300 ,
+				// showMask:true,
+				// showHeader:false,
+				// showFooter:false,
+				textResource:{
+					// header:"",
+					body : "我跑遍为了十月六号那一天，我跑遍为了十月六号那一天，我跑遍为了十月六号那一天，我跑遍为了十月六号那一天，我跑遍为了十月六号那一天，我跑遍",
+					// footer: "this is footer的",
+					done : "确定",
+					cancel :"取消"
+				},
+				bodyStyle : {
+					"text-indent" : "25px",
+					"text-align"  : "left"
+				},
+				header:{
+					// showMaxBtn : false,
+					// showCloseBtn : false
+				},
+				footer : {
+					// showCancelBtn : false,
+					// showOkBtn : false
+				},
+				beforeSubmit : function(){
+					alert(12)
+					return true;
+				}
+			}) ;
+		
+			modal.window()
+		})
+	</script>
+</body>
+</html>
