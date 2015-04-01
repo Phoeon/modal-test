@@ -318,7 +318,7 @@ Modal.prototype = {
 	//窗口改变的时候，重新调整dialog最大化尺寸
 	windowResize : function(){
 		var self = this ;
-		window.onresize = function(){
+		$(root).bind("resize",function(){
 			if(self.resizeTimeOut)clearTimeout(self.resizeTimeOut)
 			self.resizeTimeOut = setTimeout(function(){
 				var conf = {
@@ -330,7 +330,7 @@ Modal.prototype = {
 					self.position_(conf);
 				}
 			},100);
-		}
+		});
 	},
 	//toggle最大化最小化操作入口
 	toggleMaxBtn : function(e){
@@ -374,6 +374,7 @@ Modal.prototype = {
 		this.drag();
 		if(this.conf_.windowResize)
 		this.windowResize();
+
 		this.resize();
 	},
 	//初始化ui渲染入口，
