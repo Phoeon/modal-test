@@ -133,7 +133,9 @@ Modal.prototype = {
 		"click .phoeon-close-action" 		: "cancel" 			,	//右上角关闭按钮和footer区取消和关闭按钮事件
 		"click .phoeon-ok-action"    		: "submit" 			,	//footer区确定或者提交按钮事件
 		"click .phoeon-max-action"	 		: "toggleMaxBtn"	,	//右上角最大化按钮事件
-		"dblclick .phoeon-dialog-header"	: "toggleMaxBtn"		//右上角最大化按钮事件
+		"dblclick .phoeon-dialog-movehandler"	: "toggleMaxBtn",		//右上角最大化按钮事件
+		"dragstart .phoeon-dialog-movehandler"	: "stopDragStart",		//禁用拖动默认行为
+		// "selectstart .phoeon-dialog-header" : "stopSelectStart"
 	},
 	//显示ui基本入口
 	open:function(){
@@ -229,16 +231,13 @@ Modal.prototype = {
 		var self = this ;
 		this.$el.delegate(this.uiMap.moveHandler,"mousedown", function(e){
 			self.enableMove = true ;
-			// $(e.currentTarget).data("mousedownTimer",setTimeout(function(){
-			// 	var t = $(e.currentTarget) ;
-			// 	self.toggleActiveClass(true);
-			// 	self.dialog.data("oex",e.clientX - t.offset().left+self.$el.offset().left) ;
-			// 	self.dialog.data("oey",e.clientY - t.offset().top+self.$el.offset().top) ;
-			// },200));
-			var t = $(e.currentTarget) ;
-			self.toggleActiveClass(true);
-			self.dialog.data("oex",e.clientX - t.offset().left+self.$el.offset().left) ;
-			self.dialog.data("oey",e.clientY - t.offset().top+self.$el.offset().top) ;
+				mousedownTimer = self.dialog.data("mousedownTimer");
+			if(mousedownTimer)clearTimeout(mousedownTimer);
+			self.dialog.data("mousedownTimer",setTimeout(function(){
+				self.toggleActiveClass(true);
+				self.dialog.data("oex",e.clientX - parseFloat(self.dialog.css("left"))) ;
+				self.dialog.data("oey",e.clientY - parseFloat(self.dialog.css("top"))) ;
+			},50));
 		})
 	
 		this.$el.mousemove(function(e){
@@ -266,20 +265,30 @@ Modal.prototype = {
 		var self = this ;
 		this.$el.delegate(this.uiMap.resizeBar,"mousedown", function(e){
 			self.enableResize = true ;
-			var t = $(e.currentTarget) ;
+			var t = $(e.currentTarget) ,
+				w = self.dialog.width(),
+				h = self.dialog.height();
 			self.resizeDir = t.attr("data-dir");
-			self.dialog.data("ex",e.clientX - self.dialog.width()) ;
-			self.dialog.data("ey",e.clientY - self.dialog.height()) ;
+
+			self.dialog.data("ex",e.clientX) ;
+			self.dialog.data("ey",e.clientY) ;
+			self.dialog.data("w",w) ;
+			self.dialog.data("h",h) ;
+			// self.dialog.data("rightPos",self.$el.width()-w-self.dialog.offset().left) ;
+			// self.dialog.data("bottomPos",self.$el.width()-h-self.dialog.offset().top) ;
 		})
 	
 		this.$el.mousemove(function(e){
 			var t = self.dialog ;
 			if(!self.enableResize)return true ;
-			var width = (e.clientX-t.data("ex")) ,
-				height = (e.clientY-t.data("ey")) ,
+			var width = (e.clientX-t.data("ex")+t.data("w")) ,
+				height = (e.clientY-t.data("ey")+t.data("h")) ,
 				dimen = {};
 			switch(self.resizeDir){
 				case self.sysConf_.resizeDir.n : {
+					// dimen.height  =  height;
+					// dimen.top = t.data("topPos")+e.clientY-t.data("eY");
+					// dimen.bottom = t.data("bottomPos");
 					break;
 				};
 				case self.sysConf_.resizeDir.s : {
@@ -287,6 +296,8 @@ Modal.prototype = {
 					break;
 				}
 				case self.sysConf_.resizeDir.w : {
+					// dimen.width  =  width;
+					// dimen.left  =  parseFloat(t.data("left"))+width;
 					break;
 				};
 				case self.sysConf_.resizeDir.e : {
@@ -314,7 +325,7 @@ Modal.prototype = {
 	//窗口改变的时候，重新调整dialog最大化尺寸
 	windowResize : function(){
 		var self = this ;
-		$(root).bind("resize",function(){
+		window.onresize = function(){
 			if(self.resizeTimeOut)clearTimeout(self.resizeTimeOut)
 			self.resizeTimeOut = setTimeout(function(){
 				var conf = {
@@ -326,15 +337,13 @@ Modal.prototype = {
 					self.position_(conf);
 				}
 			},100);
-		});
+		}
 	},
 	//toggle最大化最小化操作入口
 	toggleMaxBtn : function(e){
 		if(!this.conf_.header.showMaxBtn){
 			return true;
 		}
-		var mousedownTimer = $(e.currentTarget).data("mousedownTimer") ;
-		if(mousedownTimer)clearTimeout(mousedownTimer);
 		var t = this.maxBtn ,
 			flag = t.data("maxFlag") ,
 			conf ,
@@ -358,22 +367,32 @@ Modal.prototype = {
 		}
 		this.position_(conf);
 	},
+	//禁用拖动默认行为
+	stopDragStart : function(e){
+		e.preventDefault();
+		return false;
+	},
+	stopSelectStart : function(e){
+		return false ;
+	},
 	//绑定ui事件入口
 	bindEvents:function(){
 		for(var key in this.ui){
 			var key_ = key.match(/\S+/g) ;
 			if(key_&&key_.length==2){
 				this.$el.delegate(key_[1],key_[0],$.proxy(this,this.ui[key]));
-				// this.$el.delegate(key_[1],key_[0],this[this.ui[key]].bind(this));
-				// this.$el.find(key_[1])[key_[0]]($.proxy(this,this[this.ui[key]]));
 			}
 		}
 		if(this.conf_.moveable)
 		this.drag();
 		if(this.conf_.windowResize)
 		this.windowResize();
-
 		this.resize();
+		// //禁用拖动默认行为
+		// this.$el.bind("dragstart",function(e){
+		// 	e.preventDefault();
+		// 	return false;
+		// })
 	},
 	//初始化ui渲染入口，
 	//决定部分ui现实隐藏，
