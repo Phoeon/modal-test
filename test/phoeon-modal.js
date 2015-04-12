@@ -280,8 +280,6 @@ Modal.prototype = {
 				dimen = {};
 			switch(self.resizeDir){
 				case self.sysConf_.resizeDir.n : {
-					// dimen.height  =  height;
-					// dimen.top = parseFloat(t.data("top"))+height;
 					break;
 				};
 				case self.sysConf_.resizeDir.s : {
@@ -289,8 +287,6 @@ Modal.prototype = {
 					break;
 				}
 				case self.sysConf_.resizeDir.w : {
-					// dimen.width  =  width;
-					// dimen.left  =  parseFloat(t.data("left"))+width;
 					break;
 				};
 				case self.sysConf_.resizeDir.e : {
@@ -367,7 +363,9 @@ Modal.prototype = {
 		for(var key in this.ui){
 			var key_ = key.match(/\S+/g) ;
 			if(key_&&key_.length==2){
-				this.$el.delegate(key_[1],key_[0],this[this.ui[key]].bind(this));
+				this.$el.delegate(key_[1],key_[0],$.proxy(this,this.ui[key]));
+				// this.$el.delegate(key_[1],key_[0],this[this.ui[key]].bind(this));
+				// this.$el.find(key_[1])[key_[0]]($.proxy(this,this[this.ui[key]]));
 			}
 		}
 		if(this.conf_.moveable)
