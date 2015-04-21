@@ -41,8 +41,8 @@
 		.phoeon-modal .bottom-resize-bar{
 			height: 6px;
 			bottom: 0px;
-			left:47%;
-			left: calc(50% - 10px);
+			left: 47% ;
+			left :calc(50% - 10px);
 			cursor: s-resize;
 			width: 20px;
 		}
