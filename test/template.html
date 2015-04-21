@@ -1,11 +1,12 @@
 <div class="phoeon-modal {$ data.showMask?'':'hideMask' $} {$ data.theme $}">
+		<div class="phoeon-mask"></div>
 		<div class="phoeon-dialog">
 			<!--拖拽窗口条-->
 			<div class="top-resize-bar resize-bar" 		data-dir="n" style="{$ data.resizeDir.n?'':'cursor:default' $}"></div>
 			<div class="bottom-resize-bar resize-bar" 	data-dir="s" style="{$ data.resizeDir.s?'':'cursor:default' $}"></div>
 			<div class="left-resize-bar resize-bar" 	data-dir="w" style="{$ data.resizeDir.w?'':'cursor:default' $}"></div>
 			<div class="right-resize-bar resize-bar" 	data-dir="e" style="{$ data.resizeDir.e?'':'cursor:default' $}"></div>
-			<div class="se-resize-resize-bar resize-bar" 	data-dir="se" style="{$ data.resizeDir.se?'':'cursor:default' $}"></div>
+			<div class="se-resize-resize-bar resize-bar" 	data-dir="se" style="{$ data.resizeDir.se?'':'cursor:default' $}">◢</div>
 			<!--拖拽窗口条-->
 			{$ if(data.showHeader){ $}
 			<div class="phoeon-dialog-bar phoeon-dialog-header">

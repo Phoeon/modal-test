@@ -231,13 +231,13 @@ Modal.prototype = {
 		var self = this ;
 		this.$el.delegate(this.uiMap.moveHandler,"mousedown", function(e){
 			self.enableMove = true ;
-				mousedownTimer = self.dialog.data("mousedownTimer");
-			if(mousedownTimer)clearTimeout(mousedownTimer);
-			self.dialog.data("mousedownTimer",setTimeout(function(){
-				self.toggleActiveClass(true);
-				self.dialog.data("oex",e.clientX - parseFloat(self.dialog.css("left"))) ;
-				self.dialog.data("oey",e.clientY - parseFloat(self.dialog.css("top"))) ;
-			},50));
+			// 	mousedownTimer = self.dialog.data("mousedownTimer");
+			// if(mousedownTimer)clearTimeout(mousedownTimer);
+			// self.dialog.data("mousedownTimer",setTimeout(function(){
+			// },50));
+			self.toggleActiveClass(true);
+			self.dialog.data("oex",e.clientX - parseFloat(self.dialog.css("left"))) ;
+			self.dialog.data("oey",e.clientY - parseFloat(self.dialog.css("top"))) ;
 		})
 	
 		this.$el.mousemove(function(e){
@@ -567,6 +567,8 @@ Modal.prototype = {
 	编译原始模版入口
 	**/
 	originTemplate : function(str){
+		console.log(str.replace(/\{\$(.+?)\$\}/g,"【$1】"))
+
 		var r = [],
 			lp = new RegExp(/{\$/g),
 			rp = new RegExp(/\$}/g),
