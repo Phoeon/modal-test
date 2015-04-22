@@ -34,7 +34,7 @@ Modal.prototype = {
 			e : "e",
 			se : "se"
 		},
-		template : "<div class=\"phoeon-modal {$ data.showMask?'':'hideMask' $} {$ data.theme $}\"><div class=\"phoeon-dialog\">{$ if(data.showHeader){ $}<div class=\"phoeon-dialog-bar phoeon-dialog-header\"><h3 class=\"phoeon-dialog-header-title\"  title=\"{$ data.textResource.header $}\">{$ data.textResource.header $}</h3><div class=\"phoeon-dialog-movehandler\"></div><div class=\"phoeon-dialog-opers\">{$ if(data.header.showMaxBtn){ $}<label class=\"phoeon-oper phoeon-max-action\" data-text=\"﹣\">□</label>{$ } $}{$ if(data.header.showCloseBtn){ $}<label class=\"phoeon-oper phoeon-close-btn phoeon-close-action\">×</label>{$ } $}</div></div>{$ } $}<div class=\"phoeon-dialog-body\"><div class=\"content\">{$ data.textResource.body $}</div></div>{$ if(data.showFooter){ $}<div class=\"phoeon-dialog-bar phoeon-dialog-footer\"><h3 class=\"phoeon-dialog-footer-title\"  title=\"{$ data.textResource.footer $}\">{$ data.textResource.footer $}</h3><div class=\"phoeon-operation\">{$ if(data.footer.showOkBtn){ $}<label class=\"phoeon-btn phoeon-ok-btn phoeon-ok-action\">{$ data.textResource.done $}</label>{$ } $}{$ if(data.footer.showCancelBtn){ $}<label class=\"phoeon-btn phoeon-cancel-btn phoeon-close-action\">{$ data.textResource.cancel $}</label>{$ } $}</div></div>{$ } $}</div></div>"
+		templateFn : function () {var data = arguments[0] , t__ = [] ; with (data) {  t__.push('<div class="phoeon-modal ') ;  t__.push( showMask?'':'hideMask' ) ;  t__.push(' ') ;  t__.push( theme ) ;  t__.push('"> <div class="phoeon-mask"></div> <div class="phoeon-dialog"> <!--拖拽窗口条--> ') ;  if(resizeDir.n){  ;  t__.push(' <div class="top-resize-bar resize-bar" data-dir="n" style="') ;  t__.push( resizeDir.n?'':'cursor:default' ) ;  t__.push('"></div> ') ;  }  ;  t__.push(' ') ;  if(resizeDir.s){  ;  t__.push(' <div class="bottom-resize-bar resize-bar" data-dir="s" style="') ;  t__.push( resizeDir.s?'':'cursor:default' ) ;  t__.push('"></div> ') ;  }  ;  t__.push(' ') ;  if(resizeDir.w){  ;  t__.push(' <div class="left-resize-bar resize-bar" data-dir="w" style="') ;  t__.push( resizeDir.w?'':'cursor:default' ) ;  t__.push('"></div> ') ;  }  ;  t__.push(' ') ;  if(resizeDir.e){  ;  t__.push(' <div class="right-resize-bar resize-bar" data-dir="e" style="') ;  t__.push( resizeDir.e?'':'cursor:default' ) ;  t__.push('"></div> ') ;  }  ;  t__.push(' ') ;  if(resizeDir.se){  ;  t__.push(' <div class="se-resize-resize-bar resize-bar" data-dir="se" style="') ;  t__.push( resizeDir.se?'':'cursor:default' ) ;  t__.push('">◢</div> ') ;  }  ;  t__.push(' <!--拖拽窗口条--> ') ;  if(showHeader){  ;  t__.push(' <div class="phoeon-dialog-bar phoeon-dialog-header"> <h3 class="phoeon-dialog-header-title" title="') ;  t__.push( textResource.header ) ;  t__.push('"> ') ;  t__.push( new Date().toFmtString('yyyy-MM-dd') ) ;  t__.push('|') ;  t__.push( textResource.header ) ;  t__.push(' </h3> <div class="phoeon-dialog-movehandler"></div> <div class="phoeon-dialog-opers"> ') ;  if(header.showMaxBtn){  ;  t__.push(' <label class="phoeon-oper phoeon-max-action" data-text="﹣">□</label> ') ;  }  ;  t__.push(' ') ;  if(header.showCloseBtn){  ;  t__.push(' <label class="phoeon-oper phoeon-close-btn phoeon-close-action">×</label> ') ;  }  ;  t__.push(' </div> </div> ') ;  }  ;  t__.push(' <div class="phoeon-dialog-body"> <div class="content"> ') ;  t__.push( textResource.body ) ;  t__.push(' </div> </div> ') ;  if(showFooter){  ;  t__.push(' <div class="phoeon-dialog-bar phoeon-dialog-footer"> <h3 class="phoeon-dialog-footer-title" title="') ;  t__.push( textResource.footer ) ;  t__.push('"> ') ;  t__.push( textResource.footer ) ;  t__.push(' </h3> <div class="phoeon-operation"> ') ;  if(footer.showOkBtn){  ;  t__.push(' <label class="phoeon-btn phoeon-ok-btn phoeon-ok-action">') ;  t__.push( textResource.done ) ;  t__.push('</label> ') ;  }  ;  t__.push(' ') ;  if(footer.showCancelBtn){  ;  t__.push(' <label class="phoeon-btn phoeon-cancel-btn phoeon-close-action"> ') ;  t__.push( textResource.cancel ) ;  t__.push(' </label> ') ;  }  ;  t__.push(' </div> </div> ') ;  }  ;  t__.push(' </div> </div>') ;  } ; return t__.join('') ;}
 	},
 	//自定义配置接受参数
 	conf_ : {
@@ -43,7 +43,7 @@ Modal.prototype = {
 		//content渲染类型远程或得渲染内容
 		url : "",
 		//模版路径
-		templatePath : "./template.html" ,
+		// templatePath : "./template.html" ,
 		// templatePath : "" ,
 		//是否可以移动
 		moveable : true ,
@@ -435,7 +435,14 @@ Modal.prototype = {
 			bodyContentStyle :{
 				"text-indent" : "25px"
 			},
-			textResource : arguments[0]
+			textResource : arguments[0],
+			resizeDir : {
+				n : false ,
+				s : false  ,
+				w : false ,
+				e : false  ,
+				se : false
+			}
 		}) ;
 		this.open(this.sysConf_.dialogType.confirm,arguments[1]) ;
 	},
@@ -456,7 +463,14 @@ Modal.prototype = {
 			bodyContentStyle :{
 				"text-indent" : "25px"
 			},
-			textResource : arguments[0]
+			textResource : arguments[0],
+			resizeDir : {
+				n : false ,
+				s : false  ,
+				w : false ,
+				e : false  ,
+				se : false
+			}
 		}) ;
 		this.open(this.sysConf_.dialogType.alert,arguments[1]) ; 
 	},
@@ -466,7 +480,7 @@ Modal.prototype = {
 			w,h;
 
 			var duration = parseInt(arguments[1]) ;
-			duration = isNaN(duration)?1000:duration ;
+			duration = isNaN(duration)?2000:duration ;
 
 		this.extend(this.conf_,{
 			showMask : false,
@@ -477,7 +491,15 @@ Modal.prototype = {
 			bodyContentStyle :{
 				"text-indent" : "25px"
 			},
-			textResource : arguments[0]
+			textResource : arguments[0],
+			//配置resize方向
+			resizeDir : {
+				n : false ,
+				s : false  ,
+				w : false ,
+				e : false  ,
+				se : false
+			}
 		}) ;
 		this.open(this.sysConf_.dialogType.popup,arguments[1]) ; 
 
@@ -540,57 +562,7 @@ Modal.prototype = {
 				conf = this.conf_ ;
 			conf.textResource.header = this.isEmpty(conf.textResource.header)?"&nbsp;":conf.textResource.header ;
 			conf.textResource.footer = this.isEmpty(conf.textResource.footer)?"&nbsp;":conf.textResource.footer ;
-			// $.ajax({
-			// 	url : conf.templatePath
-			// }).done(function(tpl){
-			// 	var tpl = self.compileTemplate.call(self,tpl);
-			// 	fn(tpl) ;
-			// });
-			var res = {responseText : this.sysConf_.template};
-			if(conf.templatePath.length){
-				res = $.ajax({
-					url : conf.templatePath,
-					async : false
-				});
-			}
-			return self.compileTemplate.call(self,res.responseText);
-	},
-	//同步模版和数据入口
-	compileTemplate : function(str){
-		str = str.replace(/\n/g,"") ;
-		str = str.replace(/\s+/g," ") ;
-		str = this.originTemplate(str) ;
-		var compile = new Function(str) ;
-		return compile(this.conf_);
-	},
-	/**
-	编译原始模版入口
-	**/
-	originTemplate : function(str){
-		console.log(str.replace(/\{\$(.+?)\$\}/g,"【$1】"))
-
-		var r = [],
-			lp = new RegExp(/{\$/g),
-			rp = new RegExp(/\$}/g),
-			lm = null,
-			rm = null,
-			lidx = 0 ;
-
-		r.push("var data = arguments[0] , t__ = ''  ");
-		while(true){
-			var m ;
-			if((lm = lp.exec(str))!==null&&(rm = rp.exec(str))!==null){
-				r.push(" ;  t__ += '"+str.slice(lidx,lm.index)+"'");
-				m = str.substring(lm.index+2,rm.index);
-				r.push((/[{}]/.test(m)?" ; ":" ;  t__+= ")+m) ;
-				lidx = rm.index+2 ;
-			}else{
-				r.push(" ;  t__+= '"+str.slice(lidx)+"'");
-				break;
-			}
-		}
-		r.push("; return t__ ;") ;
-		return r.join("");
+			return this.sysConf_.templateFn(conf);
 	},
 	
 	isEmpty : function(v){
