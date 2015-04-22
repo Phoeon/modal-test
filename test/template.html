@@ -1,60 +1,28 @@
-<div class="phoeon-modal {$ showMask?'':'hideMask' $} {$ theme $}">
-		<div class="phoeon-mask"></div>
-		<div class="phoeon-dialog">
-			<!--拖拽窗口条-->
-			{$ if(resizeDir.n){ $}
-			<div class="top-resize-bar resize-bar" 		data-dir="n" style="{$ resizeDir.n?'':'cursor:default' $}"></div>
-			{$ } $}
-			{$ if(resizeDir.s){ $}
-			<div class="bottom-resize-bar resize-bar" 	data-dir="s" style="{$ resizeDir.s?'':'cursor:default' $}"></div>
-			{$ } $}
-			{$ if(resizeDir.w){ $}
-			<div class="left-resize-bar resize-bar" 	data-dir="w" style="{$ resizeDir.w?'':'cursor:default' $}"></div>
-			{$ } $}
-			{$ if(resizeDir.e){ $}
-			<div class="right-resize-bar resize-bar" 	data-dir="e" style="{$ resizeDir.e?'':'cursor:default' $}"></div>
-			{$ } $}
-			{$ if(resizeDir.se){ $}
-			<div class="se-resize-resize-bar resize-bar" 	data-dir="se" style="{$ resizeDir.se?'':'cursor:default' $}">◢</div>
-			{$ } $}
-			<!--拖拽窗口条-->
-			{$ if(showHeader){ $}
-			<div class="phoeon-dialog-bar phoeon-dialog-header">
-				<h3 class="phoeon-dialog-header-title"  title="{$ textResource.header $}">
-					{$ new Date().toFmtString('yyyy-MM-dd') $}|{$ textResource.header $}
-				</h3>
-				<div class="phoeon-dialog-movehandler"></div>
-				<div class="phoeon-dialog-opers">
-					{$ if(header.showMaxBtn){ $}
-					<label class="phoeon-oper phoeon-max-action" data-text="﹣">□</label>
-					{$ } $}
-					{$ if(header.showCloseBtn){ $}
-					<label class="phoeon-oper phoeon-close-btn phoeon-close-action">×</label>
-					{$ } $}
+<div class="phoeon pos-rel">
+	<div class="phoeon-modal phoeon-page-dimension pos-fix">
+		<div class="phoeon-mask phoeon-page-dimension pos-abs"></div>
+		<div class="phoeon-dialog-container phoeon-page-dimension pos-abs">
+			<div class="phoeon-dialog pos-abs">
+				<div class="phoeon-dialog-bar phoeon-dialog-header">
+					<h3 class="phoeon-dialog-header-title">header</h3>
+					<div class="phoeon-dialog-movehandler"></div>
+					<div class="phoeon-dialog-opers">
+						<label class="phoeon-oper phoeon-max-action" data-text="﹣">□</label>
+						<label class="phoeon-oper phoeon-close-btn phoeon-close-action">×</label>
+					</div>
+				</div>
+				<div class="phoeon-dialog-body">
+					<div class="phoeon-content">content</div>
+				</div>
+				<div class="phoeon-dialog-bar phoeon-dialog-header">
+					<h3 class="phoeon-dialog-footer-title">footer</h3>
+					<div class="phoeon-operation">
+						<label class="phoeon-btn phoeon-ok-btn phoeon-ok-action">ok</label>
+						<label class="phoeon-btn phoeon-cancel-btn phoeon-close-action">cancel
+						</label>
+					</div>
 				</div>
 			</div>
-			{$ } $}
-			<div class="phoeon-dialog-body">
-				<div class="content">
-				{$ textResource.body $}
-				</div>
-			</div>
-			{$ if(showFooter){ $}
-			<div class="phoeon-dialog-bar phoeon-dialog-footer">
-				<h3 class="phoeon-dialog-footer-title"  title="{$ textResource.footer $}">
-					{$ textResource.footer $}
-				</h3>
-				<div class="phoeon-operation">
-					{$ if(footer.showOkBtn){ $}
-					<label class="phoeon-btn phoeon-ok-btn phoeon-ok-action">{$ textResource.done $}</label>
-					{$ } $}
-					{$ if(footer.showCancelBtn){ $}
-					<label class="phoeon-btn phoeon-cancel-btn phoeon-close-action">
-						{$ textResource.cancel $}
-					</label>
-					{$ } $}
-				</div>
-			</div>
-			{$ } $}
 		</div>
 	</div>
+</div>
